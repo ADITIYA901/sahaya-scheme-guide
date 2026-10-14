@@ -1,0 +1,26 @@
+import { Sprout, HeartPulse, ShieldCheck, House, FlaskConical, GraduationCap } from 'lucide-react';
+
+export const languages = [
+  { name: 'English', label: 'English', code: 'en-IN' },
+  { name: 'Hindi', label: 'हिन्दी', code: 'hi-IN' },
+  { name: 'Kannada', label: 'ಕನ್ನಡ', code: 'kn-IN' },
+  { name: 'Telugu', label: 'తెలుగు', code: 'te-IN' },
+  { name: 'Tamil', label: 'தமிழ்', code: 'ta-IN' },
+  { name: 'Marathi', label: 'मराठी', code: 'mr-IN' },
+];
+
+export const schemes = [
+  { id: 'pm-kisan', name: 'PM-Kisan Samman Nidhi', category: 'Agriculture', icon: Sprout, benefit: '₹6,000 / year', description: 'Financial support for small and marginal farmers, directly to your bank account.', detail: '₹6,000 yearly financial assistance in three equal installments of ₹2,000.', eligibility: 'Eligible landholding farmer families, subject to the scheme’s exclusion criteria. Institutional landholders, income tax payers and certain salaried professionals are excluded.', documents: ['Aadhaar card', 'Land ownership records', 'Bank account details'], apply: 'Register through the official PM-Kisan portal or visit your nearest Common Service Centre.', url: 'https://pmkisan.gov.in/' },
+  { id: 'ayushman', name: 'Ayushman Bharat', category: 'Health', icon: HeartPulse, benefit: 'Up to ₹5 lakh', description: 'Health coverage for your family, so treatment never has to wait.', detail: 'Health coverage up to ₹5 lakh per eligible family per year for secondary and tertiary hospital care at empanelled hospitals.', eligibility: 'Eligible families identified under PM-JAY criteria. Coverage for senior citizens aged 70 and above is available under the relevant expansion; verify through the official portal.', documents: ['Aadhaar card', 'Ration card or family identity', 'Eligibility verification'], apply: 'Check eligibility on the official beneficiary portal or contact an empanelled hospital or CSC.', url: 'https://beneficiary.nha.gov.in/' },
+  { id: 'fasal-bima', name: 'PM Fasal Bima Yojana', category: 'Insurance', icon: ShieldCheck, benefit: 'Crop protection', description: 'Protect your harvest against natural calamities and unexpected crop loss.', detail: 'Crop insurance against notified risks, including natural calamities and crop loss, subject to state notification and policy conditions.', eligibility: 'Farmers growing notified crops in notified areas, including eligible tenant farmers and sharecroppers with required records.', documents: ['Aadhaar card', 'Bank account details', 'Land and crop sowing records'], apply: 'Enroll within the notified deadline through the official portal, a bank, insurance provider or CSC.', url: 'https://pmfby.gov.in/' },
+  { id: 'awas', name: 'PM Awas Yojana', category: 'Housing', icon: House, benefit: 'Housing assistance', description: 'A helping hand to build a safe, permanent home for your family.', detail: 'Financial assistance for eligible rural households to build a pucca house, with linked support subject to local rules.', eligibility: 'Eligible houseless households and households living in qualifying kutcha houses, selected through official rural beneficiary lists.', documents: ['Aadhaar card', 'Bank account details', 'Household and land records'], apply: 'Contact your Gram Panchayat or block development office to check the official beneficiary list.', url: 'https://pmayg.nic.in/' },
+  { id: 'soil-health', name: 'Soil Health Card', category: 'Agriculture', icon: FlaskConical, benefit: 'Free soil testing', description: 'Know your soil better with expert advice on nutrients and fertilizers.', detail: 'Soil testing and nutrient recommendations to support balanced fertilizer use and improve crop productivity.', eligibility: 'Farmers can contact their local agriculture department for soil sampling and testing availability.', documents: ['Farm location details', 'Farmer identity', 'Soil sample where requested'], apply: 'Visit your local agriculture office or Krishi Vigyan Kendra for soil sampling and card issuance.', url: 'https://soilhealth.dac.gov.in/' },
+  { id: 'kaushal', name: 'PM Kaushal Vikas Yojana', category: 'Education', icon: GraduationCap, benefit: 'Free skill training', description: 'Learn practical skills, earn a certificate, and take your next step forward.', detail: 'Skill training and certification in eligible job roles through approved training providers.', eligibility: 'Eligible Indian youth meeting the age and course requirements of the chosen training program.', documents: ['Aadhaar card', 'Education details', 'Bank account details'], apply: 'Find an approved training centre and available course on the official Skill India portal.', url: 'https://www.skillindiadigital.gov.in/' },
+];
+export type Scheme = (typeof schemes)[number];
+
+export const centers = [
+  { name: 'Krishi Vigyan Kendra, Bangalore', distance: '2.5 km', phone: '+91 80-2345-6789', hours: '9 AM – 5 PM', type: 'Agriculture support' },
+  { name: 'CSC (Common Service Centre), Mandya', distance: '5 km', phone: '+91 82-1234-5678', hours: '8 AM – 6 PM', type: 'Applications & documents' },
+  { name: 'District Agriculture Office, Mysore', distance: '12 km', phone: '+91 82-9876-5432', hours: '10 AM – 4 PM', type: 'Government office' },
+];
