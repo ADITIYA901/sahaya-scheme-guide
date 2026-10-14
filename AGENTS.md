@@ -13,3 +13,5 @@
 - Keep the reference experience as one scrolling home page with section anchors, since its navigation selects sections rather than separate content pages.
 - Isolate AI calls in server functions and server-only helpers; use the Lovable AI Gateway and never expose credentials to the browser.
 - Keep scheme and help-center reference data in a shared browser-safe module, so discovery and eligibility use the same catalog.
+- Keep the reference assistant as one session-only conversation with no account or history sidebar, to preserve its public lightweight workflow.
+- Label reference weather and help-center distances as sample information rather than implying live location or forecast data.
