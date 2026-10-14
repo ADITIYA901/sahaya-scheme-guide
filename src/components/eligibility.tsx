@@ -1,0 +1,20 @@
+import { useState } from 'react';
+import { ArrowLeft, ArrowRight, Check, RotateCcw, ShieldCheck } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { schemes, type Scheme } from '@/lib/schemes';
+
+const questions = [
+  { label: 'Your Age', options: ['18-25', '26-40', '41-60', '60+'] },
+  { label: 'Land Ownership', options: ['No Land', 'Less than 2 Hectares', '2-5 Hectares', 'More than 5 Hectares'] },
+  { label: 'Annual Income', options: ['Below ₹1 Lakh', '₹1-3 Lakh', '₹3-5 Lakh', 'Above ₹5 Lakh'] },
+  { label: 'Your Occupation', options: ['Farmer', 'Farm Labourer', 'Self-Employed', 'Other'] },
+  { label: 'Your Gender', options: ['Male', 'Female', 'Other'] },
+];
+export function Eligibility({ onDetails }: { onDetails: (scheme: Scheme) => void }) {
+  const [step, setStep] = useState(0); const [answers, setAnswers] = useState<string[]>([]); const [complete, setComplete] = useState(false);
+  const question = questions[step];
+  const recommended = schemes.filter(s => s.category === 'Health' && answers[2] !== 'Above ₹5 Lakh' || s.category === 'Housing' && ['Below ₹1 Lakh', '₹1-3 Lakh'].includes(answers[2] ?? '') || ['Agriculture', 'Insurance'].includes(s.category) && answers[3] === 'Farmer' && answers[1] !== 'No Land' || s.category === 'Education' && answers[0] === '18-25');
+  return <section id="eligibility" className="bg-mint py-16"><div className="section-wrap grid items-start gap-12 md:grid-cols-[.85fr_1.15fr]"><div><span className="eyebrow text-brand">Made for you</span><h2 className="section-title mt-3">A little about you.<br />The right support for you.</h2><p className="mt-4 max-w-sm text-sm leading-7 text-muted-foreground">Answer 5 simple questions to find government schemes that match your needs.</p><div className="mt-7 flex items-center gap-2 text-xs text-brand"><ShieldCheck size={17} />Your answers stay private in this session.</div></div>
+    <div className="min-h-[260px]">{complete ? <><div className="mb-4 flex items-center justify-between gap-3"><h3 className="font-bold">Schemes you may qualify for</h3><Button variant="ghost" size="sm" onClick={() => { setComplete(false); setStep(0); setAnswers([]); }}><RotateCcw />Check Again</Button></div><p className="mb-4 text-xs text-muted-foreground">Indicative matches only. Official eligibility criteria apply.</p><div className="space-y-2">{(recommended.length ? recommended : schemes.filter(s => s.category === 'Education' || s.category === 'Health')).map(s => <Button key={s.id} variant="outline" className="h-auto w-full justify-between bg-card py-3 text-left" onClick={() => onDetails(s)}><span className="whitespace-normal">{s.name}</span><ArrowRight /></Button>)}</div></> : <><div className="flex items-center justify-between text-xs"><span className="font-semibold text-brand">Question {step + 1} of 5</span><span className="text-muted-foreground">{Math.round(step / 5 * 100)}% completed</span></div><div className="my-4 flex gap-1.5">{questions.map((q, i) => <div key={q.label} className={`h-1 flex-1 rounded-full ${i <= step ? 'bg-brand' : 'bg-brand/15'}`} />)}</div><h3 className="mb-5 mt-6 text-xl font-bold">{question?.label}</h3><div className="grid grid-cols-2 gap-3">{question?.options.map(option => <Button key={option} variant="outline" className={`h-auto min-h-12 justify-between whitespace-normal bg-card px-4 py-3 text-left ${answers[step] === option ? 'border-brand bg-secondary text-brand ring-1 ring-brand' : ''}`} onClick={() => setAnswers(a => { const copy = [...a]; copy[step] = option; return copy; })}>{option}{answers[step] === option && <Check />}</Button>)}</div><div className="mt-6 flex items-center justify-between"><Button variant="ghost" disabled={step === 0} onClick={() => setStep(s => s - 1)}><ArrowLeft />Back</Button><Button className="bg-brand text-brand-foreground hover:bg-brand/90" disabled={!answers[step]} onClick={() => step === 4 ? setComplete(true) : setStep(s => s + 1)}>{step === 4 ? 'Find My Schemes' : 'Continue'}<ArrowRight /></Button></div></>}</div>
+  </div></section>;
+}
