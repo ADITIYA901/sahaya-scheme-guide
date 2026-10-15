@@ -22,7 +22,7 @@ const navVerbs = /\b(go to|open|show|take me|navigate|scroll to|jump to)\b|เคฆเค
 
 function runCommand(text: string, actions: { openScheme: (id: string) => void }): string | null {
   const t = text.toLowerCase();
-  if (/\b(help|what can you do|commands)\b/.test(t)) return 'You can say "go to schemes", "open eligibility", "show help centers", "open PM-Kisan", "stop speaking", or just ask any question.';
+  if (/^(help|what can you do|commands)\b/.test(t) || /what can you do/.test(t)) return 'You can say "go to schemes", "open eligibility", "show help centers", "open PM-Kisan", "stop speaking", or just ask any question.';
   if (navVerbs.test(t)) {
     const scheme = schemes.find(s => t.includes((s.name.toLowerCase().split(' ')[0] ?? '').replace(/[^a-z-]/g, '')) || t.includes(s.id.replace('-', ' ')) || t.includes(s.id));
     if (scheme && !/\bschemes\b/.test(t)) { actions.openScheme(scheme.id); return `Opening ${scheme.name}.`; }
