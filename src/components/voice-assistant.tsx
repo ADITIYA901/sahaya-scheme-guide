@@ -24,7 +24,7 @@ function runCommand(text: string, actions: { openScheme: (id: string) => void })
   const t = text.toLowerCase();
   if (/\b(help|what can you do|commands)\b/.test(t)) return 'You can say "go to schemes", "open eligibility", "show help centers", "open PM-Kisan", "stop speaking", or just ask any question.';
   if (navVerbs.test(t)) {
-    const scheme = schemes.find(s => t.includes(s.name.toLowerCase().split(' ')[0].replace(/[^a-z-]/g, '')) || t.includes(s.id.replace('-', ' ')) || t.includes(s.id));
+    const scheme = schemes.find(s => t.includes((s.name.toLowerCase().split(' ')[0] ?? '').replace(/[^a-z-]/g, '')) || t.includes(s.id.replace('-', ' ')) || t.includes(s.id));
     if (scheme && !/\bschemes\b/.test(t)) { actions.openScheme(scheme.id); return `Opening ${scheme.name}.`; }
     const section = sections.find(s => s.words.some(w => t.includes(w)));
     if (section) { document.getElementById(section.id)?.scrollIntoView({ behavior: 'smooth' }); return `Taking you to ${section.label}.`; }
