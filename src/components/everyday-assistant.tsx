@@ -9,7 +9,7 @@ import { askAssistant } from '@/lib/assistant.functions';
 import { languages, type Attachment, type Mode } from '@/lib/assistant-options';
 import workspaceImage from '@/assets/everyday-workspace.jpg';
 
-type Message = { role: 'user' | 'assistant'; content: string; source?: string };
+type Message = { role: 'user' | 'assistant'; content: string; source?: string | undefined };
 const modes = [
   { id: 'chat' as const, name: 'Chat', icon: MessageCircle, color: 'bg-sky text-brand', title: 'A little clarity. A new idea.', text: 'Questions, plans, and those “what if” moments.', example: 'Help me plan a productive week.' },
   { id: 'write' as const, name: 'Write', icon: PenLine, color: 'bg-peach text-primary', title: 'Find the right words.', text: 'From a first draft to a better way to say it.', example: 'Draft an email' },
