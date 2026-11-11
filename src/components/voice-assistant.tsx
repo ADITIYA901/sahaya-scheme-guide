@@ -13,16 +13,15 @@ const sections: { id: string; words: string[]; label: string }[] = [
   { id: 'home', words: ['home', 'top', 'start'], label: 'home' },
   { id: 'schemes', words: ['scheme', 'yojana', 'योजना'], label: 'schemes' },
   { id: 'eligibility', words: ['eligib', 'check', 'पात्र'], label: 'eligibility checker' },
-  { id: 'advisory', words: ['farm', 'weather', 'advis', 'मौसम', 'खेती'], label: 'farmer advisory' },
-  { id: 'centers', words: ['center', 'centre', 'office', 'help cent', 'केंद्र'], label: 'help centers' },
-  { id: 'voice', words: ['pdf', 'upload', 'document'], label: 'PDF analysis' },
+  { id: 'groups', words: ['student', 'women', 'senior', 'worker', 'family', 'farmer', 'disabil', 'group'], label: 'support by life situation' },
+  { id: 'voice', words: ['pdf', 'upload', 'document', 'question', 'voice'], label: 'ask a question and document help' },
 ];
 
 const navVerbs = /\b(go to|open|show|take me|navigate|scroll to|jump to)\b|दिखाओ|खोलो/i;
 
 function runCommand(text: string, actions: { openScheme: (id: string) => void }): string | null {
   const t = text.toLowerCase();
-  if (/^(help|what can you do|commands)\b/.test(t) || /what can you do/.test(t)) return 'You can say "go to schemes", "open eligibility", "show help centers", "open PM-Kisan", "stop speaking", or just ask any question.';
+    if (/^(help|what can you do|commands)\b/.test(t) || /what can you do/.test(t)) return 'You can say "go to schemes", "open eligibility", "show students", "open PM-Kisan", "stop speaking", or ask about government support.';
   if (navVerbs.test(t)) {
     const scheme = schemes.find(s => { const w = (s.name.toLowerCase().split(' ')[0] ?? '').replace(/[^a-z-]/g, ''); return (w.length > 3 && t.includes(w)) || t.includes(s.id.replace('-', ' ')) || t.includes(s.id); });
     if (scheme && !/\bschemes\b/.test(t)) { actions.openScheme(scheme.id); return `Opening ${scheme.name}.`; }
@@ -93,7 +92,7 @@ export function VoiceAssistant({ language, onOpenScheme }: { language: string; o
       </div>
     </header>
     <div className="flex-1 overflow-y-auto p-4">
-      {messages.length === 0 && <div className="py-4 text-sm text-muted-foreground"><p className="font-bold text-foreground">Speak or type to get started.</p><p className="mt-2 leading-6">Try: “Go to schemes”, “Open PM-Kisan”, “Show help centers”, or ask “Am I eligible for Ayushman Bharat?”</p></div>}
+      {messages.length === 0 && <div className="py-4 text-sm text-muted-foreground"><p className="font-bold text-foreground">Speak or type to get started.</p><p className="mt-2 leading-6">Try: “Go to schemes”, “Show students”, “Open PM-Kisan”, or ask “How can I check eligibility for Ayushman Bharat?”</p></div>}
       {messages.map((m, i) => <div key={i} className={`mb-3 ${m.role === 'user' ? 'ml-8 rounded-lg bg-secondary px-3 py-2' : 'mr-2'}`}><p className="mb-1 text-[10px] font-bold uppercase text-muted-foreground">{m.role === 'user' ? 'You' : 'Sahayak'}</p><div className="answer-text"><ReactMarkdown>{m.content}</ReactMarkdown></div>{m.role === 'assistant' && <Button variant="ghost" size="icon" aria-label="Play this answer" onClick={() => speak(m.content)}><Volume2 /></Button>}</div>)}
       {busy && <div role="status" className="flex items-center gap-2 text-xs text-muted-foreground"><LoaderCircle className="animate-spin" size={15} />Finding an answer…</div>}
       {(error || voice.voiceError) && <p role="alert" className="mt-3 rounded-md bg-peach p-3 text-xs text-destructive">{error || voice.voiceError}</p>}

@@ -24,3 +24,14 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+### Configure the AI assistant locally
+
+The chat and PDF assistant call OpenRouter from the server. Create an API key in [OpenRouter settings](https://openrouter.ai/settings/keys), then add it to `.env.local` in the project root:
+
+```env
+OPENROUTER_API_KEY=your_key_here
+OPENROUTER_MODEL=openrouter/free
+```
+
+The model line is optional. `openrouter/free` selects an available free model, so responses and availability can vary; OpenRouter's free plan currently allows 50 requests per day. Restart `npm run dev` after saving. Keep the key private: do not use a `VITE_` prefix, expose it in browser code, or commit it.
