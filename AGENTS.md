@@ -10,11 +10,10 @@
 <!-- LOVABLE:END -->
 
 ## Application rules
-- Keep the everyday assistant as one scrolling home page with section anchors, since navigation selects tools rather than separate pages.
-- Isolate AI calls in server functions and server-only helpers; use the Lovable AI Gateway and never expose credentials to the browser.
-- Keep scheme and help-center reference data in a shared browser-safe module, so discovery and eligibility use the same catalog.
-- Keep all everyday modes and voice in one session-only conversation with no account or history sidebar, to preserve its public lightweight workflow.
-- Label reference weather and help-center distances as sample information rather than implying live location or forecast data.
-- Keep everyday mode options, language choices and upload validation in a browser-safe module shared by UI and server validation, so constraints cannot diverge.
-- Preserve the existing server-function and streaming gateway helper boundary for all everyday modes and file questions, so credentials never enter the browser.
-- Keep the former specialist components unmounted but intact, so the general-purpose adaptation does not destroy unrelated working code.
+- Keep Sahaya Bot Guide focused on discovering Indian government schemes, checking eligibility, and explaining scheme documents.
+- Keep the experience on one scrolling home page with section anchors for scheme discovery, eligibility, voice questions, and PDF help.
+- Keep scheme and audience reference data in the shared browser-safe schemes module, so discovery and eligibility use the same catalog.
+- Preserve the scheme-focused chat, voice assistant, eligibility helper, and PDF analysis components as active features.
+- Keep AI calls in server functions and server-only helpers; never expose API credentials to the browser.
+- Preserve the OpenRouter model configuration through server-only environment variables; never commit local environment files.
+- Label sample weather or help-center details clearly and do not imply live information unless connected to a live data source.
