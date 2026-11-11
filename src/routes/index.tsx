@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
-import { Landmark, Globe2, ArrowUpRight, ArrowRight, Mic, Search, Sparkles, Check, MessageCircle, Menu, X, AudioLines, ShieldCheck, Volume2, GraduationCap, HeartHandshake, House, BriefcaseBusiness, BookOpen, FileText } from 'lucide-react';
+import { Landmark, Globe2, ArrowUpRight, ArrowRight, Mic, Search, Sparkles, Check, Copy, MessageCircle, Menu, X, AudioLines, ShieldCheck, Volume2, GraduationCap, HeartHandshake, House, BriefcaseBusiness, BookOpen, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { AssistantPanel, useVoice } from '@/components/assistant-panel';
@@ -36,12 +36,25 @@ function Index() {
   const [chatOpen, setChatOpen] = useState(false);
   const [question, setQuestion] = useState('');
   const [selected, setSelected] = useState<Scheme | null>(null);
+  const [linkCopied, setLinkCopied] = useState(false);
+  const [copyError, setCopyError] = useState('');
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All categories');
   const [audience, setAudience] = useState('');
   const voice = useVoice(language, text => { setQuestion(text); setChatOpen(true); });
 
   function openChat(q = '') { setQuestion(q); setChatOpen(true); }
+  async function copyOfficialLink() {
+    if (!selected) return;
+    try {
+      await navigator.clipboard.writeText(selected.url);
+      setLinkCopied(true);
+      setCopyError('');
+      window.setTimeout(() => setLinkCopied(false), 2000);
+    } catch {
+      setCopyError('Could not copy the link. Open the official source and copy it from your browser.');
+    }
+  }
   function explore(group = '', type = 'All categories') {
     setAudience(group);
     setCategory(type || 'All categories');
@@ -92,6 +105,6 @@ function Index() {
     {!chatOpen && <Button className="fixed bottom-6 right-6 z-40 h-12 gap-2 rounded-full px-5 shadow-lg" aria-label="Open AI assistant" onClick={() => openChat()}><MessageCircle size={19} /><span className="text-xs">Ask Sahayak</span><Sparkles size={14} /></Button>}
     <VoiceAssistant language={language} onOpenScheme={id => setSelected(schemes.find(s => s.id === id) ?? null)} />
     <AssistantPanel open={chatOpen} onClose={() => { setChatOpen(false); window.speechSynthesis?.cancel(); }} language={language} setLanguage={setLanguage} initialQuestion={question} />
-    <Dialog open={Boolean(selected)} onOpenChange={open => { if (!open) setSelected(null); }}><DialogContent className="max-h-[85dvh] max-w-xl overflow-y-auto"><DialogTitle className="pr-6 text-xl">{selected?.name}</DialogTitle><DialogDescription>{selected?.category} · {selected?.benefit}</DialogDescription>{selected && <><div className="space-y-5 text-sm leading-6"><div><h4 className="font-bold text-brand">About this support</h4><p className="mt-1 text-muted-foreground">{selected.detail}</p></div><div><h4 className="font-bold text-brand">Who may be able to apply?</h4><p className="mt-1 text-muted-foreground">{selected.eligibility}</p></div><div><h4 className="font-bold text-brand">Documents to check</h4><ul className="mt-2 space-y-2">{selected.documents.map(d => <li className="flex items-center gap-2 text-muted-foreground" key={d}><Check size={14} className="shrink-0 text-brand" />{d}</li>)}</ul></div><div><h4 className="font-bold text-brand">How to get started</h4><p className="mt-1 text-muted-foreground">{selected.apply}</p></div></div><p className="rounded-md bg-muted p-3 text-xs text-muted-foreground">This guide is informational. Eligibility, benefits, documents, and application windows can change. Confirm current details on the official source.</p><div className="flex flex-wrap gap-3"><Button asChild><a href={selected.url} target="_blank" rel="noopener noreferrer">Open official source<ArrowUpRight /></a></Button><Button variant="outline" onClick={() => { openChat(`Explain ${selected.name} in simple language. Cover who may qualify, benefits, documents, and how to apply. Clearly distinguish the information I provided from anything you cannot verify.`); setSelected(null); }}><MessageCircle />Ask AI about this</Button></div></>}</DialogContent></Dialog>
+    <Dialog open={Boolean(selected)} onOpenChange={open => { if (!open) setSelected(null); }}><DialogContent className="max-h-[85dvh] max-w-xl overflow-y-auto"><DialogTitle className="pr-6 text-xl">{selected?.name}</DialogTitle><DialogDescription>{selected?.category} · {selected?.benefit}</DialogDescription>{selected && <><div className="space-y-5 text-sm leading-6"><div><h4 className="font-bold text-brand">About this support</h4><p className="mt-1 text-muted-foreground">{selected.detail}</p></div><div><h4 className="font-bold text-brand">Who may be able to apply?</h4><p className="mt-1 text-muted-foreground">{selected.eligibility}</p></div><div><h4 className="font-bold text-brand">Documents to check</h4><ul className="mt-2 space-y-2">{selected.documents.map(d => <li className="flex items-center gap-2 text-muted-foreground" key={d}><Check size={14} className="shrink-0 text-brand" />{d}</li>)}</ul></div><div><h4 className="font-bold text-brand">How to get started</h4><p className="mt-1 text-muted-foreground">{selected.apply}</p></div></div><p className="rounded-md bg-muted p-3 text-xs text-muted-foreground">This guide is informational. Eligibility, benefits, documents, and application windows can change. Confirm current details on the official source.</p><div className="flex flex-wrap gap-3"><Button asChild><a href={selected.url} target="_blank" rel="noopener noreferrer">Open official source<ArrowUpRight /></a></Button><Button variant="outline" onClick={copyOfficialLink}><>{linkCopied ? <Check /> : <Copy />}{linkCopied ? 'Link copied' : 'Copy official link'}</></Button><Button variant="outline" onClick={() => { openChat(`Explain ${selected.name} in simple language. Cover who may qualify, benefits, documents, and how to apply. Clearly distinguish the information I provided from anything you cannot verify.`); setSelected(null); }}><MessageCircle />Ask AI about this</Button></div>{copyError && <p role="alert" className="text-xs text-destructive">{copyError}</p>}</>}</DialogContent></Dialog>
   </div>;
 }
